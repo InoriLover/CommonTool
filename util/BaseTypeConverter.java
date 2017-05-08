@@ -1,10 +1,11 @@
-package com.customlayoutmanager.util;
+package com.sinostride.ibcmanage.util;
 
 import java.nio.charset.Charset;
 
 /**
  * Created by Fishy on 2017/4/10.
  * 基本的类型之间的转换器
+ * edited on 2017/05/08
  */
 
 public class BaseTypeConverter {
@@ -56,12 +57,14 @@ public class BaseTypeConverter {
 
     /**
      * String转int，传入的参数必须合法
+     *
      * @param value
      * @return
      */
-    public static int stringToInt(String value){
+    public static int stringToInt(String value) {
         return Integer.valueOf(value);
     }
+
     /**
      * byte数组转String
      * <p>使用默认的编码集</p>
@@ -149,25 +152,51 @@ public class BaseTypeConverter {
      * @return
      */
     public static String bytesToHexString(byte[] value) {
+        return bytesToHexString(value,true);
+    }
+
+    /**
+     * byte数组转16进制表示的String
+     * @param value
+     * @param isUppercase 是否为大写
+     * @return
+     */
+    public static String bytesToHexString(byte[] value,boolean isUppercase) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < value.length; i++) {
             int data = value[i];
-            String dataStr = Integer.toHexString(data);
+            if (value[i] < 0) {
+                data=256+value[i];
+            }
+            String dataStr = Integer.toHexString(data).toUpperCase();
+            if(isUppercase){
+                dataStr.toUpperCase();
+            }
+            if (dataStr.length() < 2) {
+                dataStr = "0" + dataStr;
+            }
             stringBuilder.append(dataStr);
         }
         return stringBuilder.toString();
     }
-
     /**
      * byte数组转16进制表示的String数组
+     *
      * @param value
      * @return
      */
     public static String[] bytesToHexStringArray(byte[] value) {
-        String[] result=new String[value.length];
+        String[] result = new String[value.length];
         for (int i = 0; i < value.length; i++) {
-            int data=value[i];
-            result[i]=Integer.toHexString(data);
+            int data = value[i];
+            if (value[i] < 0) {
+                data=256+value[i];
+            }
+            String dataStr = Integer.toHexString(data);
+            if (dataStr.length() < 2) {
+                dataStr = "0" + dataStr;
+            }
+            result[i] = dataStr;
         }
         return result;
     }
